@@ -40,7 +40,8 @@ export default class ReconnectingWebSocket {
     private readonly _url;
     private readonly _protocols?;
     private readonly _options;
-    constructor(url: UrlProvider, protocols?: string | string[], options?: Options);
+    private readonly _wsOptions;
+    constructor(url: UrlProvider, protocols?: string | string[], wsOptions?: any, options?: Options);
     static readonly CONNECTING: number;
     static readonly OPEN: number;
     static readonly CLOSING: number;

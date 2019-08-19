@@ -79,11 +79,18 @@ export default class ReconnectingWebSocket {
     private readonly _url: UrlProvider;
     private readonly _protocols?: string | string[];
     private readonly _options: Options;
+    private readonly _wsOptions: any;
 
-    constructor(url: UrlProvider, protocols?: string | string[], options: Options = {}) {
+    constructor(
+        url: UrlProvider,
+        protocols?: string | string[],
+        wsOptions: any = {},
+        options: Options = {},
+    ) {
         this._url = url;
         this._protocols = protocols;
         this._options = options;
+        this._wsOptions = wsOptions;
         this._connect();
     }
 
@@ -359,9 +366,7 @@ export default class ReconnectingWebSocket {
                     return;
                 }
                 this._debug('connect', {url, protocols: this._protocols});
-                this._ws = this._protocols
-                    ? new WebSocket(url, this._protocols)
-                    : new WebSocket(url);
+                this._ws = new WebSocket(url, this._protocols || undefined, this._wsOptions);
                 // @ts-ignore
                 this._ws!.binaryType = this._binaryType;
                 this._connectLock = false;

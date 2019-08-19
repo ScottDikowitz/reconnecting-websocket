@@ -84,7 +84,8 @@ var DEFAULT = {
     debug: false,
 };
 var ReconnectingWebSocket = /** @class */ (function () {
-    function ReconnectingWebSocket(url, protocols, options) {
+    function ReconnectingWebSocket(url, protocols, wsOptions, options) {
+        if (wsOptions === void 0) { wsOptions = {}; }
         if (options === void 0) { options = {}; }
         var _this = this;
         this._listeners = {
@@ -162,6 +163,7 @@ var ReconnectingWebSocket = /** @class */ (function () {
         this._url = url;
         this._protocols = protocols;
         this._options = options;
+        this._wsOptions = wsOptions;
         this._connect();
     }
     Object.defineProperty(ReconnectingWebSocket, "CONNECTING", {
@@ -449,9 +451,7 @@ var ReconnectingWebSocket = /** @class */ (function () {
                 return;
             }
             _this._debug('connect', { url: url, protocols: _this._protocols });
-            _this._ws = _this._protocols
-                ? new WebSocket(url, _this._protocols)
-                : new WebSocket(url);
+            _this._ws = new WebSocket(url, _this._protocols || undefined, _this._wsOptions);
             // @ts-ignore
             _this._ws.binaryType = _this._binaryType;
             _this._connectLock = false;
